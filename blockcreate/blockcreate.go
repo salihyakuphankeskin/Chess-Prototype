@@ -1,12 +1,18 @@
 package blockcreate
 
-import "fmt"
+import (
+	"fmt"
+)
 
+func Empty(...any) any {
+
+	return 0
+}
 func Runner(){
-	blockCreatePassive()
+	BlockCreatePassive()
 }
 
-func blockCreatePassive() {
+func BlockCreatePassive() {
 
 	gridV2 := make(map[int]map[int]map[int]int)
 
