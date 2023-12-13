@@ -3,10 +3,8 @@ package test1
 import (
 	"fmt"
 )
-
 func Runner()  {
-	Test1()
-	
+	Test1()	
 }
 
 func Test1() {

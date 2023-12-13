@@ -4,10 +4,6 @@ import (
 	"fmt"
 )
 
-func Empty(...any) any {
-
-	return 0
-}
 func Runner(){
 	BlockCreatePassive()
 }
