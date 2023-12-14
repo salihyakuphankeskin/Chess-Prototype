@@ -14,13 +14,13 @@ func main() {
 	//Creating a String x String => String Matrix
 	chessBoard := make(map[string]map[string]string)
 	chessBoard = chessBoardCreationLoop(chessBoard)
-	sideSelection(chessBoard)
-	printMap_String_String(chessBoard)
+	userSideInput := sideSelection(chessBoard)
+	printMap_String_String(userSideInput, chessBoard)
 
 	fmt.Println("")
 	fmt.Println("")	
 	
-	Empty(chessPieces,chessBoardCreationLoop,startingProgram)
+	Empty(chessPieces,chessBoardCreationLoop,startingProgram, userSideInput)
 }
 
 var chessPieces = map[string]string{
@@ -47,16 +47,35 @@ func EmptyModule()  {
 	blockcreate.Runner()
 	test1.Runner()	
 }
-func printMap_String_String(myMap map[string]map[string]string) {
+func printMap_String_String(myUserSideInput string,myMap map[string]map[string]string) {	
+	
+	if  (
+		myUserSideInput == "white" || myUserSideInput == "w" || 
+		myUserSideInput == "wh" ){
+			fmt.Printf("WHITE SIDE \n")
+			for  horizontalLines := 8; horizontalLines >= 1; horizontalLines--{
+				for verticalLines := 'A'; verticalLines <= 'H'; verticalLines++  {
+						rowKey := string(verticalLines)
+					colKey := fmt.Sprintf("%d", horizontalLines)
+					value := myMap[rowKey][colKey]
+					fmt.Printf("%s %s: %s | ", rowKey, colKey, value)
+				}
+				fmt.Printf("\n")
+			}
 
-	for verticalLines := 'A'; verticalLines <= 'H'; verticalLines++ {
-		rowKey := string(verticalLines)
-		for horizontalLines := 1; horizontalLines <= 8; horizontalLines++ {
-			colKey := fmt.Sprintf("%d", horizontalLines)
-			value := myMap[rowKey][colKey]
-			fmt.Printf("%s %s: %s | ", rowKey, colKey, value)
-		}
-		fmt.Printf("\n")
+	}else if(
+		myUserSideInput == "black" || myUserSideInput == "b" || 
+		myUserSideInput == "bl" ){	
+			fmt.Printf("BLACK SIDE \n")	
+			for  horizontalLines := 1; horizontalLines <= 8; horizontalLines++{
+				for verticalLines := 'H'; verticalLines >= 'A'; verticalLines--  {
+						rowKey := string(verticalLines)
+					colKey := fmt.Sprintf("%d", horizontalLines)
+					value := myMap[rowKey][colKey]
+					fmt.Printf("%s %s: %s | ", rowKey, colKey, value)
+				}
+				fmt.Printf("\n")
+			}
 	}
 }
 
@@ -81,69 +100,61 @@ func chessBoardCreationLoop(myMap map[string]map[string]string) map[string]map[s
 	return myMap	
 }
 
-var chessPiecesDupricated =[12]string{
-	"White Pawn",
-	"White Knight", 
-	"White Bishop", 
-	"White Rook", 
-	"White Queen", 
-	"White King",
-
-	"Black Pawn", 
-	"Black Knight", 
-	"Black Bishop", 
-	"Black Rook", 
-	"Black Queen", 
-	"Black King",
-}
-
 func startingProgram(){
 	fmt.Println("HELLO WELCOME TO THE CHESS GAME IN GOLANG")	
 }
-func sideSelection(myMap map[string]map[string]string)  {
-	scanner := bufio.NewScanner(os.Stdin)
 
+func sideSelection(myMap map[string]map[string]string) string{
+
+	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Enter 'White' or 'Black': ")
 		scanner.Scan()
-		userInput := scanner.Text()
+		userSideInput := strings.ToLower(scanner.Text())
+		fmt.Print("\n")
 
-		if err := chessBoardSetUp(userInput, myMap); err == nil {
+		if err := chessBoardSetUp(userSideInput, myMap); err == nil {
+			if  (
+				userSideInput == "white"	|| 		userSideInput == "w" || 
+				userSideInput == "wh"){
+					return userSideInput
+							
+			}else if (
+				userSideInput == "black" || userSideInput == "b" || 
+				userSideInput == "bl"){
+					return userSideInput
+				}
 			break
 		} else {
 			fmt.Println("Error:", err)
 		}
 	}
-
+	return " "
 }
 
 func chessBoardSetUp(selectedSide string, myMap map[string]map[string]string)  error {
-	selectedSide = strings.ToLower(selectedSide)
 	if  (
-		selectedSide == "white"	|| 		selectedSide == "w" || 
-		selectedSide == "wh"	|| 		selectedSide == "1"){
-			myMap["A"]["1"]= chessPieces["White Rook"]
-			myMap["H"]["1"]= chessPieces["White Rook"]
-			myMap["B"]["1"]= chessPieces["White Knight"]
-			myMap["G"]["1"]= chessPieces["White Knight"]
-			myMap["C"]["1"]= chessPieces["White Bishop"]
-			myMap["F"]["1"]= chessPieces["White Bishop"]
-			myMap["D"]["1"]= chessPieces["White Queen"]
-			myMap["E"]["1"]= chessPieces["White King"]
+		selectedSide == "white"	|| 		selectedSide == "w" 	|| 
+		selectedSide == "wh"	||		selectedSide == "black" || 		
+		selectedSide == "b" 	|| 		selectedSide == "bl" 	){
+			myMap["A"]["1"] = chessPieces["White Rook"]
+			myMap["H"]["1"] = chessPieces["White Rook"]
+			myMap["B"]["1"] = chessPieces["White Knight"]
+			myMap["G"]["1"] = chessPieces["White Knight"]
+			myMap["C"]["1"] = chessPieces["White Bishop"]
+			myMap["F"]["1"] = chessPieces["White Bishop"]
+			myMap["D"]["1"] = chessPieces["White Queen"]
+			myMap["E"]["1"] = chessPieces["White King"]
 			
-			myMap["A"]["2"]= chessPieces["White Pawn"] 
-			myMap["B"]["2"]= chessPieces["White Pawn"] 
-			myMap["C"]["2"]= chessPieces["White Pawn"] 
-			myMap["D"]["2"]= chessPieces["White Pawn"] 
-			myMap["E"]["2"]= chessPieces["White Pawn"] 
-			myMap["F"]["2"]= chessPieces["White Pawn"] 
-			myMap["G"]["2"]= chessPieces["White Pawn"] 
-			myMap["H"]["2"]= chessPieces["White Pawn"]
-			return nil	
-					
-	}else if (
-		selectedSide == "black" || selectedSide == "b" || 
-		selectedSide == "bl" 	|| selectedSide == "0"){	
+			myMap["A"]["2"] = chessPieces["White Pawn"] 
+			myMap["B"]["2"] = chessPieces["White Pawn"] 
+			myMap["C"]["2"] = chessPieces["White Pawn"] 
+			myMap["D"]["2"] = chessPieces["White Pawn"] 
+			myMap["E"]["2"] = chessPieces["White Pawn"] 
+			myMap["F"]["2"] = chessPieces["White Pawn"] 
+			myMap["G"]["2"] = chessPieces["White Pawn"] 
+			myMap["H"]["2"] = chessPieces["White Pawn"]
+
 			myMap["A"]["8"] = chessPieces["Black Rook"]
 			myMap["H"]["8"] = chessPieces["Black Rook"]
 			myMap["B"]["8"] = chessPieces["Black Rook"]
@@ -153,17 +164,16 @@ func chessBoardSetUp(selectedSide string, myMap map[string]map[string]string)  e
 			myMap["D"]["8"] = chessPieces["Black Queen"]
 			myMap["E"]["8"] = chessPieces["Black King"]
 			
-			myMap["A"]["7"]= chessPieces["Black Pawn"] 
-			myMap["B"]["7"]= chessPieces["Black Pawn"] 
-			myMap["C"]["7"]= chessPieces["Black Pawn"] 
-			myMap["D"]["7"]= chessPieces["Black Pawn"] 
-			myMap["E"]["7"]= chessPieces["Black Pawn"] 
-			myMap["F"]["7"]= chessPieces["Black Pawn"] 
-			myMap["G"]["7"]= chessPieces["Black Pawn"] 
-			myMap["H"]["7"]= chessPieces["Black Pawn"]
+			myMap["A"]["7"] = chessPieces["Black Pawn"] 
+			myMap["B"]["7"] = chessPieces["Black Pawn"] 
+			myMap["C"]["7"] = chessPieces["Black Pawn"] 
+			myMap["D"]["7"] = chessPieces["Black Pawn"] 
+			myMap["E"]["7"] = chessPieces["Black Pawn"] 
+			myMap["F"]["7"] = chessPieces["Black Pawn"] 
+			myMap["G"]["7"] = chessPieces["Black Pawn"] 
+			myMap["H"]["7"] = chessPieces["Black Pawn"]
 			return nil
 	}else {
 		return errors.New("Invalid input. Please enter either 'White' or 'Black'")
-	}
-	
+	}	
 }
