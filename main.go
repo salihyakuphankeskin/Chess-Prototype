@@ -48,7 +48,6 @@ func EmptyModule()  {
 	test1.Runner()	
 }
 func printMap_String_String(myUserSideInput string,myMap map[string]map[string]string) {	
-	
 	if  (
 		myUserSideInput == "white" || myUserSideInput == "w" || 
 		myUserSideInput == "wh" ){
@@ -62,7 +61,6 @@ func printMap_String_String(myUserSideInput string,myMap map[string]map[string]s
 				}
 				fmt.Printf("\n")
 			}
-
 	}else if(
 		myUserSideInput == "black" || myUserSideInput == "b" || 
 		myUserSideInput == "bl" ){	
